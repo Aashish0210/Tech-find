@@ -30,7 +30,7 @@ DEFAULT_RADIUS = 15000.0  # 15km
 # In-memory storage for active search results (session-like behaviour for simplicity)
 active_results = []
 
-def search_places_api(query, lat=DEFAULT_LAT, lng=DEFAULT_LNG, radius=DEFAULT_RADIUS, page_token=None):
+def search_places_api(query, lat=None, lng=None, radius=None, page_token=None):
     """Call Google Places API (New) Text Search."""
     if not API_KEY:
         return {"error": {"message": "Google Places API Key is missing. Please configure GOOGLE_MAPS_API_KEY in your Vercel Environment Variables or local .env file.", "status": "MISSING_API_KEY"}}
@@ -55,8 +55,12 @@ def search_places_api(query, lat=DEFAULT_LAT, lng=DEFAULT_LNG, radius=DEFAULT_RA
     
     body = {
         "textQuery": query,
-        "languageCode": "en",
-        "locationBias": {
+        "languageCode": "en"
+    }
+    
+    # Only bias search to coordinates if explicitly provided (saves custom searches worldwide)
+    if lat is not None and lng is not None and radius is not None:
+        body["locationBias"] = {
             "circle": {
                 "center": {
                     "latitude": lat,
@@ -65,7 +69,6 @@ def search_places_api(query, lat=DEFAULT_LAT, lng=DEFAULT_LNG, radius=DEFAULT_RA
                 "radius": radius
             }
         }
-    }
     
     if page_token:
         body["pageToken"] = page_token
@@ -96,21 +99,33 @@ def api_search():
         return jsonify({"success": False, "error": "Search query is required"}), 400
         
     # Geographic settings
-    lat, lng = DEFAULT_LAT, DEFAULT_LNG
-    # Optional parsing of coordinates based on location input
-    # For common Nepal cities, we can hardcode for user convenience!
+    lat, lng, radius_meters = None, None, None
+    is_custom_nepal_city = False
+    
     loc_clean = location_name.strip().lower()
     if 'pokhara' in loc_clean:
         lat, lng = 28.2096, 83.9856
+        is_custom_nepal_city = True
     elif 'lalitpur' in loc_clean or 'patan' in loc_clean:
         lat, lng = 27.6744, 85.3240
+        is_custom_nepal_city = True
     elif 'bhaktapur' in loc_clean:
         lat, lng = 27.6710, 85.4298
+        is_custom_nepal_city = True
     elif 'chitwan' in loc_clean:
         lat, lng = 27.5260, 84.3489
+        is_custom_nepal_city = True
+    elif 'kathmandu' in loc_clean:
+        lat, lng = DEFAULT_LAT, DEFAULT_LNG
+        is_custom_nepal_city = True
         
-    radius_meters = radius_km * 1000.0
-    
+    if is_custom_nepal_city:
+        radius_meters = radius_km * 1000.0
+        api_query = query
+    else:
+        # Append location to search text for robust global searching
+        api_query = f"{query} in {location_name}" if location_name else query
+        
     # Place collection
     places = []
     seen_ids = set()
@@ -118,7 +133,7 @@ def api_search():
     
     # Fetch up to 3 pages (Google Places API limit for single search query)
     for page_idx in range(3):
-        res = search_places_api(query, lat, lng, radius_meters, page_token=next_token)
+        res = search_places_api(api_query, lat, lng, radius_meters, page_token=next_token)
         
         if "error" in res:
             err = res["error"]
