@@ -1,0 +1,11 @@
+.env
+__pycache__/
+*.py[cod]
+*$py.class
+*.xlsx
+*.log
+.vscode/
+.idea/
+.antigravity/
+.gemini/
+.antigravity-ide/
