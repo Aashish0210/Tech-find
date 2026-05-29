@@ -20,7 +20,7 @@ if os.path.exists('.env'):
                 k, v = line.split('=', 1)
                 os.environ[k.strip()] = v.strip()
 
-API_KEY = os.environ.get("GOOGLE_MAPS_API_KEY")
+API_KEY = os.environ.get("GOOGLE_MAPS_API_KEY") or os.environ.get("API_KEY")
 
 # Default coordinates for Kathmandu, Nepal
 DEFAULT_LAT = 27.7172
