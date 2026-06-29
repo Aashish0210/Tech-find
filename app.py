@@ -218,8 +218,8 @@ def api_pitch():
     location = address.split(',')[0] if address else 'Kathmandu'
     email_subject = f"Free Website Concept for {name} — Tech Design Nepal International (TDNI)"
     email_body = (
-        f"Hello!\n\n"
-        f"My name is ____, and I'm with Tech Design Nepal International (TDNI).\n\n"
+        f"Namaste!\n\n"
+        f"My name is David Kinder, and I'm with Tech Design Nepal International (TDNI).\n\n"
         f"While looking at guest houses in {location}, we came across {name} and noticed the excellent reputation you've built with your guests. We also noticed that your business doesn't currently have its own website.\n\n"
         f"Today, many travelers search online before making a reservation. Without a website, potential guests often have to rely only on third-party booking platforms or social media to learn about your business. A professional website gives your guest house a place to showcase its rooms, amenities, location, and contact information while building trust with both local and international visitors.\n\n"
         f"At TDNI, we create modern, mobile-friendly websites designed specifically for hospitality businesses. Every website is professionally designed to reflect your brand and includes:\n\n"
