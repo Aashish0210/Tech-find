@@ -1297,12 +1297,6 @@
                 <span id="stat-coverage" class="stat-value">0%</span>
                 <span class="stat-desc">Percentage of listings with websites</span>
             </div>
-            
-            <div class="stat-card revenue-card">
-                <span class="stat-label">Est. Pipeline Value</span>
-                <span id="stat-revenue" class="stat-value">$0</span>
-                <span class="stat-desc">Based on $500 TDNI standard build rate</span>
-            </div>
         </section>
 
         <!-- Results Header / Toolbar -->
@@ -1613,7 +1607,6 @@
                     document.getElementById('stat-total').textContent = data.stats.total_found;
                     document.getElementById('stat-leads').textContent = data.stats.no_website;
                     document.getElementById('stat-coverage').textContent = `${data.stats.coverage_rate}%`;
-                    document.getElementById('stat-revenue').textContent = `$${data.stats.estimated_value_usd.toLocaleString()}`;
                     
                     // Render layout components
                     document.getElementById('results-header').style.display = 'flex';

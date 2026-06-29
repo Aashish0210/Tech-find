@@ -201,8 +201,7 @@ def api_search():
             "total_found": total_found,
             "no_website": no_website_count,
             "has_website": total_found - no_website_count,
-            "coverage_rate": coverage_rate,
-            "estimated_value_usd": no_website_count * 500  # Estimate $500 per basic website client
+            "coverage_rate": coverage_rate
         }
     })
 
@@ -213,43 +212,45 @@ def api_pitch():
     name = data.get('name', 'Business Owner')
     rating = data.get('rating', 'N/A')
     reviews = data.get('reviews', 0)
-    address = data.get('address', 'your area')
+    address = data.get('address', '')
     
     # Generate email pitch
-    email_subject = f"Website concept & direct booking setup for {name} — TDNI Web Solutions"
+    location = address.split(',')[0] if address else 'Kathmandu'
+    email_subject = f"Free Website Concept for {name} — Tech Design Nepal International (TDNI)"
     email_body = (
-        f"Hi team at {name},\n\n"
-        f"We are the consulting team at Tech Design Nepal International (TDNI). We were recently looking up "
-        f"outstanding businesses in {address.split(',')[0] if address else 'Kathmandu'} and noticed your incredible customer reviews on Google Maps "
-        f"({reviews} reviews with a rating of {rating}/5!). You clearly run a fantastic business that guests absolutely love.\n\n"
-        f"However, I noticed that you don't have a website listed on your Google Maps profile. "
-        f"Currently, potential customers searching online have to book through third-party platforms like "
-        f"Booking.com or Agoda, which charge hefty commissions (up to 15-20% per booking).\n\n"
-        f"At TDNI (https://techdesignnepal.com/), we specialize in building premium, elegant, and mobile-friendly websites "
-        f"specifically engineered to help businesses like yours take direct bookings and save thousands in commission fees.\n\n"
-        f"We have actually drafted a quick home page mockup concept for {name}. Would you be open to a "
-        f"quick 5-minute call or a coffee to see how a direct-booking website could increase your profit margins this season?\n\n"
-        f"You can reach us at contact@techdesignnepal.com or call/WhatsApp us directly at +977 9766386790.\n\n"
-        f"Best regards,\n"
-        f"The TDNI Team\n"
+        f"Hello!\n\n"
+        f"My name is ____, and I'm with Tech Design Nepal International (TDNI).\n\n"
+        f"While looking at guest houses in {location}, we came across {name} and noticed the excellent reputation you've built with your guests. We also noticed that your business doesn't currently have its own website.\n\n"
+        f"Today, many travelers search online before making a reservation. Without a website, potential guests often have to rely only on third-party booking platforms or social media to learn about your business. A professional website gives your guest house a place to showcase its rooms, amenities, location, and contact information while building trust with both local and international visitors.\n\n"
+        f"At TDNI, we create modern, mobile-friendly websites designed specifically for hospitality businesses. Every website is professionally designed to reflect your brand and includes:\n\n"
+        f"* A beautiful homepage that showcases your guest house\n"
+        f"* Photo galleries of your rooms and facilities\n"
+        f"* Room and pricing information\n"
+        f"* Location map and contact details\n"
+        f"* WhatsApp and phone contact buttons\n"
+        f"* Fast loading on mobile devices\n"
+        f"* Search engine optimization (SEO) to help more people find your business on Google\n"
+        f"* Easy updates as your business grows\n\n"
+        f"To show you what's possible, we'd be happy to create a free homepage concept for {name} with no obligation. This allows you to see how your business could look online before making any decision.\n\n"
+        f"If you're interested, simply reply to this message or contact us, and we'll be happy to discuss your project.\n\n"
+        f"We look forward to helping more travelers discover {name}.\n\n"
+        f"Best regards,\n\n"
         f"Tech Design Nepal International (TDNI)\n"
-        f"Phone/WhatsApp: +977 9766386790\n"
-        f"Web: https://techdesignnepal.com/"
+        f"Creating modern websites that help Nepal's hospitality businesses build trust and attract more guests."
     )
     
     # Generate phone pitch
     phone_script = (
         f"\"Namaste! Am I speaking with the owner or manager of {name}?\n\n"
         f"[Wait for response]\n\n"
-        f"Great! I'm calling from TDNI — Tech Design Nepal International. We are a premium local web design agency. "
-        f"I'm reaching out because I saw you have a massive rating of {rating}/5 with {reviews} reviews on Google Maps. "
-        f"First of all, congratulations on such excellent feedback from your guests!\n\n"
-        f"I noticed that when tourists search for your business, you don't have a direct website "
-        f"where they can view services and book. This means you might be losing a lot of bookings to Expedia or Booking.com, "
-        f"who take big commission cuts.\n\n"
-        f"At TDNI (techdesignnepal.com), we build high-quality direct booking websites specifically designed to save you from paying commissions. "
-        f"Our design team is actually looking at a custom website mockup we drafted for {name} right now. Could I send you a preview link over WhatsApp, or maybe "
-        f"swing by for a quick 5-minute chat? What time works best for you?\""
+        f"Great! I'm calling from TDNI — Tech Design Nepal International. We are a local web design agency specializing in websites for hospitality businesses. "
+        f"I'm reaching out because I saw you have an excellent reputation on Google Maps with a rating of {rating}/5 and {reviews} reviews. "
+        f"First of all, congratulations on such great feedback from your guests!\n\n"
+        f"I noticed that when travelers search online, {name} doesn't currently have its own website. "
+        f"Without a website, potential guests usually have to rely on third-party booking platforms or social media to find details about you. "
+        f"At TDNI, we build modern, mobile-friendly websites to showcase rooms, amenities, location, and add direct contact buttons like WhatsApp.\n\n"
+        f"To show you what's possible, our design team would be happy to create a free homepage concept mockup for {name} with no obligation, so you can see how your business could look online. "
+        f"Could I send you a quick preview link over WhatsApp, or maybe discuss this briefly? What would be the best way?\""
     )
     
     return jsonify({
